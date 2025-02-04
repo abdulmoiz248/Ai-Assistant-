@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Client, GatewayIntentBits, TextChannel, Partials, Message,Interaction } from 'discord.js';
 import { IncomeService } from 'src/income/income.service';
+import { ExpenseService } from 'src/expense/expense.service'
 
 @Injectable()
 export class DiscordService {
   private client: Client;
 
-  constructor(private incomeService: IncomeService) {
+  constructor(private incomeService: IncomeService,private expenseService: ExpenseService) {
     this.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
@@ -43,6 +44,7 @@ export class DiscordService {
       
         const amount = interaction.options.get('amount')?.value as number;
         const description = interaction.options.get('description')?.value as string;
+        this.expenseService.addExpense(amount,description);
     
         await interaction.reply(`Expense of ${amount} added `);
       }
