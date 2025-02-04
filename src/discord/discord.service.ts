@@ -1,22 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Client, GatewayIntentBits, TextChannel, Partials, Message,Interaction } from 'discord.js';
 import { IncomeService } from 'src/income/income.service';
 import { ExpenseService } from 'src/expense/expense.service'
+import { client } from 'src/client/client';
+
+import { Client,  Message,Interaction } from 'discord.js';
 
 @Injectable()
 export class DiscordService {
-  private client: Client;
+  private client:Client;
 
   constructor(private incomeService: IncomeService,private expenseService: ExpenseService) {
-    this.client = new Client({
-      intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.DirectMessages, 
-      ],
-      partials: [Partials.Channel], 
-    });
+    this.client=client;
   }
 
   async onModuleInit() {
@@ -73,14 +67,5 @@ export class DiscordService {
     await this.client.login(TOKEN);
   }
 
-  async sendMessage(channelId: string, message: string) {
-    const channel = await this.client.channels.fetch(channelId);
-
-    if (channel instanceof TextChannel) {
-    
-      await channel.send(message);
-    } else {
-      console.error("Channel does not support sending messages");
-    }
-  }
+  
 }

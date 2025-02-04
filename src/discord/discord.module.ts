@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { DiscordService } from './discord.service';
 import { DiscordController } from './discord.controller';
-import { IncomeService } from 'src/income/income.service';
-import { ExpenseService } from 'src/expense/expense.service';
+import { IncomeModule } from 'src/income/income.module'; // Import IncomeModule
+import { ExpenseModule } from 'src/expense/expense.module'; // Import ExpenseModule
 
 @Module({
-  exports:[DiscordService],
+  exports: [DiscordService],
   controllers: [DiscordController],
-  providers: [DiscordService,IncomeService,ExpenseService],
-  imports: [],
+  providers: [DiscordService],
+  imports: [IncomeModule, ExpenseModule], 
 })
 export class DiscordModule {}
