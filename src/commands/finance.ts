@@ -31,6 +31,22 @@ const commands = [
       option.setName('description')
         .setDescription('A description of the expense')
         .setRequired(true)),
+
+  new SlashCommandBuilder()
+    .setName('event')
+    .setDescription('Create an event')
+    .addStringOption(option =>
+      option.setName('description')
+        .setDescription('A description of the event')
+        .setRequired(true))
+    .addStringOption(option =>
+      option.setName('date')
+        .setDescription('The date of the event (format: YYYY-MM-DD)')
+        .setRequired(true))
+    .addStringOption(option =>
+      option.setName('time')
+        .setDescription('The time of the event (format: HH:MM)')
+        .setRequired(true))
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_BOT_TOKEN as string);
@@ -46,3 +62,8 @@ const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_BOT_TOKEN a
     console.error(error);
   }
 })();
+
+
+
+
+//npx ts-node src/commands/finance.ts 

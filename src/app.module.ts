@@ -8,10 +8,11 @@ import { ExpenseModule } from './expense/expense.module';
 import { LeetcodeModule } from './leetcode/leetcode.module';
 import { LeetCodeService } from './leetcode/leetcode.service';
 import { SendMsgModule } from './send-msg/send-msg.module';
-import { SendMsgService } from './send-msg/send-msg.service';
+import { EventsModule } from './events/events.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule],
+  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule, EventsModule,ScheduleModule.forRoot()],
   controllers: [AppController],
   providers: [AppService,LeetCodeService],
 })

@@ -4,12 +4,13 @@ import { ExpenseService } from 'src/expense/expense.service'
 import { client } from 'src/client/client';
 
 import { Client,  Message,Interaction } from 'discord.js';
+import { EventService } from 'src/events/events.service';
 
 @Injectable()
 export class DiscordService {
   private client:Client;
 
-  constructor(private incomeService: IncomeService,private expenseService: ExpenseService) {
+  constructor(private incomeService: IncomeService,private expenseService: ExpenseService,private eventService:EventService) {
     this.client=client;
   }
 
@@ -41,6 +42,14 @@ export class DiscordService {
         this.expenseService.addExpense(amount,description);
     
         await interaction.reply(`Expense of ${amount} added `);
+      }
+
+      if(commandName==='event'){
+        const date = interaction.options.get('date')?.value as string;
+        const time = interaction.options.get('time')?.value as string;
+        const description = interaction.options.get('description')?.value as string;
+        this.eventService.createEvent({date,description,time});
+        await interaction.reply(`Event created successfully`);
       }
     });
 
