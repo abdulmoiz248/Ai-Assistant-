@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Client, GatewayIntentBits, TextChannel, Partials, Message } from 'discord.js';
+import { Client, GatewayIntentBits, TextChannel, Partials, Message,Interaction } from 'discord.js';
+import { IncomeService } from 'src/income/income.service';
 
 @Injectable()
 export class DiscordService {
   private client: Client;
 
-  constructor() {
+  constructor(private incomeService: IncomeService) {
     this.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
@@ -23,6 +24,29 @@ export class DiscordService {
     this.client.once('ready', () => {
       console.log(`🤖 Discord Bot is online as ${this.client.user?.tag}`);
     });
+    this.client.on('interactionCreate', async (interaction: Interaction) => {
+      if (!interaction.isCommand()) return;
+
+      const { commandName } = interaction;
+
+      if (commandName === 'income') {
+      
+        const amount = interaction.options.get('amount')?.value as number;
+        const description = interaction.options.get('description')?.value as string;
+        
+        
+          this.incomeService.addIncome(amount,description);
+          await interaction.reply(`Income of ${amount} added successfully `);
+      }
+
+      if (commandName === 'expense') {
+      
+        const amount = interaction.options.get('amount')?.value as number;
+        const description = interaction.options.get('description')?.value as string;
+    
+        await interaction.reply(`Expense of ${amount} added `);
+      }
+    });
 
    
     this.client.on('messageCreate', async (message: Message) => {
@@ -31,7 +55,7 @@ export class DiscordService {
      
       if (message.partial) {
         try {
-          await message.fetch(); // Fetch the full message
+          await message.fetch(); 
         } catch (error) {
           console.error('Failed to fetch message:', error);
           return;
@@ -39,14 +63,9 @@ export class DiscordService {
       }
 
       if (message.guild === null) { // DM check
-        console.log('Received DM:', message.content); // Log DM content for debugging
-
-        if (message.content.toLowerCase() === 'hello') {
-          await message.reply('Hello! How can I assist you? 🤖');
-        }else {
-            await message.reply('I only understand "hello" for now. 🤖');
-        }
+        console.log('Received DM:', message.content);         
       }
+     
     });
 
     await this.client.login(TOKEN);
