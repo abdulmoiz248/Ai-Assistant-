@@ -18,7 +18,7 @@ export class EventService {
     const eventDate = new Date(`${date}T${time}`)
 
     const job = setTimeout(async () => {
-      await this.sendMsg.sendMessage(this.cID,`Reminder  : ${description} on ${eventDate.getDate()}`)
+      await this.sendMsg.sendMessage(this.cID,`Reminder  : ${description} `)
     }, eventDate.getTime() - Date.now())
 
     this.schedulerRegistry.addTimeout(`event_${Date.now()}`, job)

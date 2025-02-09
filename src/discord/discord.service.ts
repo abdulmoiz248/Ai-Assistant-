@@ -70,10 +70,19 @@ export class DiscordService {
         }
       }
 
-      if (message.guild === null) { // DM check
+      if (message.guild === null) { 
         console.log('Received DM:', message.content);   
         const msg=  await this.PersonalAssistantService.generateContent(message.content);
-        
+        if (msg.toLowerCase().startsWith("event") || msg.toLowerCase().startsWith(`"event`) || msg.toLowerCase().startsWith(`'event`)) {  
+          this.extractReminderDetails(msg)
+          return;
+         }else if (msg.toLowerCase().startsWith("income") || msg.toLowerCase().startsWith(`"income`) || msg.toLowerCase().startsWith(`'income`)) {  
+          this.extractIncomeDetails(msg)
+          return;
+         }else if (msg.toLowerCase().startsWith("expense") || msg.toLowerCase().startsWith(`"expense`) || msg.toLowerCase().startsWith(`'expense`)) {  
+          this.extractExpenseDetails(msg)
+          return;
+         }
         await this.sendMsg.sendMessage(this.cId,msg);
          
       }
@@ -83,5 +92,85 @@ export class DiscordService {
     await this.client.login(TOKEN);
   }
 
+
+ async extractReminderDetails(message:string) {
+   
+  
+
+   
+    const parts = message.split(/\s+/); 
+    if (parts.length < 4) {
+        return false; 
+    }
+
+    // Extract date, time, and description
+    let date = parts[1]; 
+    const time = parts[2]; 
+    const description = parts.slice(3).join(" ");
+   
+
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if(date.includes('today')) 
+{
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  const yyyy = today.getFullYear();
+  date = `${yyyy}-${mm}-${dd}`;
+}
+    else if (!dateRegex.test(date)) {
+        return false; 
+    }
+
+    // Validate time format (24-hour format)
+    const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!timeRegex.test(time)) {
+        return false; 
+    }
+    console.log("time",time);
+    console.log("description",description);
+    console.log("date",date);
+
+
+
+    await this.eventService.createEvent({date,description,time});
+    await this.sendMsg.sendMessage(this.cId,`Event ${description} created Successfully`);
+    return true;
+}
+
+async extractIncomeDetails(message:string) {
+  const parts = message.split(/\s+/);
+  if (parts.length < 3) {
+      return "Invalid format. Please provide the income in the format: `income [amount] [description]`.";
+  }
+
+  const amount = parseFloat(parts[1]);
+  if (isNaN(amount)) {
+      return "Invalid amount. Please provide a numeric value for the income.";
+  }
+
+  const description = parts.slice(2).join(" ");
+  this.incomeService.addIncome(amount,description);
+  await this.sendMsg.sendMessage(this.cId, `Income of ${amount} added successfully for ${description}.`);
+ 
+}
+
+
+ async extractExpenseDetails(message:string) {
+  const parts = message.split(/\s+/); // Split by whitespace
+  if (parts.length < 3) {
+      return "Invalid format. Please provide the expense in the format: `expense [amount] [description]`.";
+  }
+
+  const amount = parseFloat(parts[1]);
+  if (isNaN(amount)) {
+      return "Invalid amount. Please provide a numeric value for the expense.";
+  }
+
+  const description = parts.slice(2).join(" ");
+  this.expenseService.addExpense(amount,description);
+  await this.sendMsg.sendMessage(this.cId, `Expense of ${amount} added successfully for ${description}.`);
+  
+}
   
 }

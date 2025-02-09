@@ -12,10 +12,11 @@ import { EventsModule } from './events/events.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GeminiModule } from './gemini/gemini.module';
 import { PersonalAssistantModule } from './personal-assistant/personal-assistant.module';
+import { EmailModule } from './email/email.module';
 
 
 @Module({
-  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule, EventsModule,ScheduleModule.forRoot(), GeminiModule, PersonalAssistantModule,],
+  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule, EventsModule,ScheduleModule.forRoot(), GeminiModule, PersonalAssistantModule, EmailModule,],
   controllers: [AppController],
   providers: [AppService,LeetCodeService],
 })

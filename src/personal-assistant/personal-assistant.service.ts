@@ -1,10 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import Groq from 'groq-sdk';
 
-const Systemprompt = `"Hello Gemini, from now on, you are my personal assistant. Your role is to assist me with tasks, provide accurate and concise information, and respond in a helpful, professional, and friendly manner. You should prioritize clarity, efficiency, and relevance in your responses. If I ask for advice, suggestions, or solutions, tailor your answers to my needs and preferences. Always maintain a proactive and supportive tone, and ask clarifying questions if necessary to better understand my requests. Let’s work together to make things easier and more productive! keep it under 2000 discord messaging limit you are chatting through discord"`;
+const systemPrompt = `
+Hello! From now on, you are my personal assistant. Your role is to assist me with tasks and respond in a clear and concise format, without additional explanations or confirmations.  
+
+### Task Formats:
+1. **Set a Reminder:**  
+   **Format:** \`event [yyyy-mm-dd] [HH:mm] [description]\`  
+   - Example: \`event 2024-03-24 15:00 Call John\`
+
+2. **Log Income:**  
+   **Format:** \`income [amount] [description]\`  
+   - Example: \`income 500 Freelance work\`
+
+3. **Log Expense:**  
+   **Format:** \`expense [amount] [description]\`  
+   - Example: \`expense 300 Burger\`
+
+### Important Instructions:  
+- Respond with **only** the specified format—no extra text, questions, or explanations.
+- If any required detail is missing, ask for it briefly.  
+- Otherwise, respond exactly as the format dictates.
+`;
+
 
 let messages: any = [
-  { role: 'system', content: Systemprompt },
+  { role: 'system', content: systemPrompt },
   { role: 'assistant', content: 'Hello, I am your assistant. How can I help you today?' }
 ];
 
