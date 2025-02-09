@@ -5,13 +5,16 @@ import { client } from 'src/client/client';
 
 import { Client,  Message,Interaction } from 'discord.js';
 import { EventService } from 'src/events/events.service';
-
+import { SendMsgService } from 'src/send-msg/send-msg.service';
+import {PersonalAssistantService} from 'src/personal-assistant/personal-assistant.service';
 @Injectable()
 export class DiscordService {
   private client:Client;
 
-  constructor(private incomeService: IncomeService,private expenseService: ExpenseService,private eventService:EventService) {
+  private cId;
+  constructor(private sendMsg:SendMsgService,private PersonalAssistantService:PersonalAssistantService,private incomeService: IncomeService,private expenseService: ExpenseService,private eventService:EventService) {
     this.client=client;
+    this.cId = process.env.CHANNEL_ID;
   }
 
   async onModuleInit() {
@@ -68,7 +71,11 @@ export class DiscordService {
       }
 
       if (message.guild === null) { // DM check
-        console.log('Received DM:', message.content);         
+        console.log('Received DM:', message.content);   
+        const msg=  await this.PersonalAssistantService.generateContent(message.content);
+        
+        await this.sendMsg.sendMessage(this.cId,msg);
+         
       }
      
     });

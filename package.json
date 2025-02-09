@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@discordjs/rest": "^2.4.2",
+    "@google/generative-ai": "^0.21.0",
     "@nestjs/common": "^11.0.7",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.7",
@@ -33,6 +34,7 @@
     "child_process": "^1.0.2",
     "discord-api-types": "^0.37.119",
     "discord.js": "^14.17.3",
+    "generative-ai": "^0.1.4",
     "googleapis": "^144.0.0",
     "groq-sdk": "^0.14.0",
     "imap": "^0.8.19",

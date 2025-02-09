@@ -10,9 +10,12 @@ import { LeetCodeService } from './leetcode/leetcode.service';
 import { SendMsgModule } from './send-msg/send-msg.module';
 import { EventsModule } from './events/events.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { GeminiModule } from './gemini/gemini.module';
+import { PersonalAssistantModule } from './personal-assistant/personal-assistant.module';
+
 
 @Module({
-  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule, EventsModule,ScheduleModule.forRoot(),],
+  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule, EventsModule,ScheduleModule.forRoot(), GeminiModule, PersonalAssistantModule,],
   controllers: [AppController],
   providers: [AppService,LeetCodeService],
 })
