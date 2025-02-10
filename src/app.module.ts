@@ -15,10 +15,11 @@ import { PersonalAssistantModule } from './personal-assistant/personal-assistant
 import { EmailModule } from './email/email.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MonthlyStatementModule } from './monthly-statement/monthly-statement.module';
+import { SavingsModule } from './savings/savings.module';
 
 
 @Module({
-  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule, EventsModule,ScheduleModule.forRoot(), GeminiModule, PersonalAssistantModule, EmailModule, MongooseModule.forRoot(process.env.MONGODB_URI!), MonthlyStatementModule,],
+  imports: [DiscordModule,ConfigModule.forRoot(), LeetcodeModule,IncomeModule, ExpenseModule, SendMsgModule, EventsModule,ScheduleModule.forRoot(), GeminiModule, PersonalAssistantModule, EmailModule, MongooseModule.forRoot(process.env.MONGODB_URI!), MonthlyStatementModule, SavingsModule,],
   controllers: [AppController],
   providers: [AppService,LeetCodeService],
 })

@@ -7,12 +7,13 @@ import { Client,  Message,Interaction } from 'discord.js';
 import { EventService } from 'src/events/events.service';
 import { SendMsgService } from 'src/send-msg/send-msg.service';
 import {PersonalAssistantService} from 'src/personal-assistant/personal-assistant.service';
+import { SavingsService } from 'src/savings/savings.service';
 @Injectable()
 export class DiscordService {
   private client:Client;
 
   private cId;
-  constructor(private sendMsg:SendMsgService,private PersonalAssistantService:PersonalAssistantService,private incomeService: IncomeService,private expenseService: ExpenseService,private eventService:EventService) {
+  constructor(private savingService:SavingsService,private sendMsg:SendMsgService,private PersonalAssistantService:PersonalAssistantService,private incomeService: IncomeService,private expenseService: ExpenseService,private eventService:EventService) {
     this.client=client;
     this.cId = process.env.CHANNEL_ID;
   }
@@ -82,7 +83,29 @@ export class DiscordService {
          }else if (msg.toLowerCase().startsWith("expense") || msg.toLowerCase().startsWith(`"expense`) || msg.toLowerCase().startsWith(`'expense`)) {  
           this.extractExpenseDetails(msg)
           return;
-         }
+         }else if(msg.toLowerCase().startsWith("get-this-month-expense")){
+          const res=await this.expenseService.getThisMonthExpenses()
+          await this.sendMsg.sendMessage(this.cId,res); 
+         }else if(msg.toLowerCase().startsWith("get-this-month-income")){
+          const res=await this.incomeService.getThisMonthExpenses();
+          await this.sendMsg.sendMessage(this.cId,res);
+         }else if(msg.toLowerCase().startsWith("get-all-expense")){
+          const res=await this.expenseService.getAllExpenses();
+          await this.sendMsg.sendMessage(this.cId,res);
+         }else if(msg.toLowerCase().startsWith("get-all-income")){
+               const res=await this.incomeService.getAllIncome();
+                await this.sendMsg.sendMessage(this.cId,res);
+
+         }else if(msg.toLowerCase().startsWith("get-this-month-saving")){
+          const res=await this.savingService.getThisMonthSaving();
+           await this.sendMsg.sendMessage(this.cId,res);
+
+         }else if(msg.toLowerCase().startsWith("get-all-savings")){
+      const res=await this.savingService.getAllSavings();
+       await this.sendMsg.sendMessage(this.cId,res);
+
+       }
+         else
         await this.sendMsg.sendMessage(this.cId,msg);
          
       }
@@ -173,4 +196,5 @@ async extractIncomeDetails(message:string) {
   
 }
   
+
 }

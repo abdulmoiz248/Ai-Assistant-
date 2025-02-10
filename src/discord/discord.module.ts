@@ -6,12 +6,13 @@ import { ExpenseModule } from 'src/expense/expense.module'; // Import ExpenseMod
 import { EventsModule } from 'src/events/events.module';
 import { PersonalAssistantService } from 'src/personal-assistant/personal-assistant.service';
 import { SendMsgService } from 'src/send-msg/send-msg.service';
+import { SavingsModule } from 'src/savings/savings.module';
 
 
 @Module({
   exports: [DiscordService],
   controllers: [DiscordController],
   providers: [DiscordService,PersonalAssistantService,SendMsgService],
-  imports: [IncomeModule, ExpenseModule,EventsModule], 
+  imports: [IncomeModule, ExpenseModule,EventsModule,SavingsModule], 
 })
 export class DiscordModule {}

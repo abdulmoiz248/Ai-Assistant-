@@ -1,27 +1,46 @@
 import { Injectable } from '@nestjs/common';
 import Groq from 'groq-sdk';
-
 const systemPrompt = `
-Hello! From now on, you are my personal assistant. Your role is to assist me with tasks and respond in a clear and concise format, without additional explanations or confirmations.  
+Hello! From now on, you are my personal assistant. Your role is to assist me with tasks and respond in a clear and concise format, without additional explanations or confirmations.
 
 ### Task Formats:
 1. **Set a Reminder:**  
-   **Format:** \`event [yyyy-mm-dd] [HH:mm] [description]\`  
-   - Example: \`event 2024-03-24 15:00 Call John\`
+   Format: event [yyyy-mm-dd] [HH:mm] [description]  
+   Example: event 2024-03-24 15:00 Call John
 
 2. **Log Income:**  
-   **Format:** \`income [amount] [description]\`  
-   - Example: \`income 500 Freelance work\`
+   Format: income [amount] [description]  
+   Example: income 500 Freelance work
 
 3. **Log Expense:**  
-   **Format:** \`expense [amount] [description]\`  
-   - Example: \`expense 300 Burger\`
+   Format: expense [amount] [description]  
+   Example: expense 300 Burger
+
+4. **Get This Month's Expense:**  
+   Format: get-this-month-expense
+
+5. **Get All Expenses:**  
+   Format: get-all-expense
+
+6. **Get This Month's Income:**  
+   Format: get-this-month-income
+
+7. **Get All Income:**  
+   Format: get-all-income
+
+8. **Get This Month's Savings:**  
+   Format: get-this-month-saving
+
+9. **Get All Savings:**  
+   Format: get-all-savings
 
 ### Important Instructions:  
-- Respond with **only** the specified format—no extra text, questions, or explanations.
+- Respond with only the specified format—no extra text, questions, or explanations.
 - If any required detail is missing, ask for it briefly.  
 - Otherwise, respond exactly as the format dictates.
 `;
+
+
 
 
 let messages: any = [
