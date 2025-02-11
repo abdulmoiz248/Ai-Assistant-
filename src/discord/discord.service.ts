@@ -102,10 +102,25 @@ export class DiscordService {
 
          }else if(msg.toLowerCase().startsWith("get-all-savings")){
       const res=await this.savingService.getAllSavings();
-       await this.sendMsg.sendMessage(this.cId,res);
+        await this.sendMsg.sendMessage(this.cId,res);
 
-       }
-         else
+       }else if(msg.toLowerCase().startsWith("timed-event")){
+        const tokens = msg.split(' ');
+  
+        // Check if we have at least 3 tokens: "timed-event", time, and description
+        if (tokens.length < 3) {
+          console.error("Invalid format. Use: timed-event [time-in-seconds] [description]");
+          return;
+        }
+        
+        const timeInSeconds = parseInt(tokens[1], 10);
+        const description = tokens.slice(2).join(' ').trim();
+        
+      
+        const res = await this.eventService.createEventFromSec(description, timeInSeconds);
+        await this.sendMsg.sendMessage(this.cId, res)
+  
+         } else
         await this.sendMsg.sendMessage(this.cId,msg);
          
       }
