@@ -7,12 +7,13 @@ import { EventsModule } from 'src/events/events.module';
 import { PersonalAssistantService } from 'src/personal-assistant/personal-assistant.service';
 import { SendMsgService } from 'src/send-msg/send-msg.service';
 import { SavingsModule } from 'src/savings/savings.module';
+import { SendEmailModule } from 'src/send-email/send-email.module';
 
 
 @Module({
   exports: [DiscordService],
   controllers: [DiscordController],
   providers: [DiscordService,PersonalAssistantService,SendMsgService],
-  imports: [IncomeModule, ExpenseModule,EventsModule,SavingsModule], 
+  imports: [IncomeModule, ExpenseModule,EventsModule,SavingsModule,SendEmailModule], 
 })
 export class DiscordModule {}

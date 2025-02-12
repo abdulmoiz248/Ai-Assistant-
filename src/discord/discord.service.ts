@@ -8,12 +8,13 @@ import { EventService } from 'src/events/events.service';
 import { SendMsgService } from 'src/send-msg/send-msg.service';
 import {PersonalAssistantService} from 'src/personal-assistant/personal-assistant.service';
 import { SavingsService } from 'src/savings/savings.service';
+import { SendEmailService } from 'src/send-email/send-email.service';
 @Injectable()
 export class DiscordService {
   private client:Client;
 
   private cId;
-  constructor(private savingService:SavingsService,private sendMsg:SendMsgService,private PersonalAssistantService:PersonalAssistantService,private incomeService: IncomeService,private expenseService: ExpenseService,private eventService:EventService) {
+  constructor(private sendMail:SendEmailService,private savingService:SavingsService,private sendMsg:SendMsgService,private PersonalAssistantService:PersonalAssistantService,private incomeService: IncomeService,private expenseService: ExpenseService,private eventService:EventService) {
     this.client=client;
     this.cId = process.env.CHANNEL_ID;
   }
@@ -104,10 +105,10 @@ export class DiscordService {
       const res=await this.savingService.getAllSavings();
         await this.sendMsg.sendMessage(this.cId,res);
 
-       }else if(msg.toLowerCase().startsWith("timed-event")){
+        }else if(msg.toLowerCase().startsWith("timed-event")){
         const tokens = msg.split(' ');
   
-        // Check if we have at least 3 tokens: "timed-event", time, and description
+     
         if (tokens.length < 3) {
           console.error("Invalid format. Use: timed-event [time-in-seconds] [description]");
           return;
@@ -120,7 +121,16 @@ export class DiscordService {
         const res = await this.eventService.createEventFromSec(description, timeInSeconds);
         await this.sendMsg.sendMessage(this.cId, res)
   
-         } else
+         }else if(msg.toLowerCase().startsWith("email-account-2")){
+         
+          await this.sendMail.sendEmailFrom2(msg)
+            await this.sendMsg.sendMessage(this.cId,'Email sent from Educational Account');
+    
+         }else if(msg.toLowerCase().startsWith("email-account-1")){
+             await this.sendMail.sendEmailFrom1(msg)
+               await this.sendMsg.sendMessage(this.cId,'Emal sent from Main Account');
+        
+                } else
         await this.sendMsg.sendMessage(this.cId,msg);
          
       }
