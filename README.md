@@ -1,23 +1,17 @@
 ### Ai-Assistant-
 
-This repository holds code for an AI Assistant project. The AI Assistant is built using Node.js, Express.js, and MongoDB. It uses natural language processing (NLP) to understand user input and generate appropriate responses.
+A smart Discord-based assistant designed to streamline productivity and daily management. It automates email handling, tracks income and expenses, and generates monthly income statements. The assistant also sends daily LeetCode challenges to keep coding skills sharp and provides task reminders for events, deadlines, and birthdays.
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/ai-assistant-repo-name`
-2. Navigate to the project directory: `cd ai-assistant-repo-name`
+1. Clone the repository: 
+2. Navigate to the project directory: `cd ai-assistant`
 3. Install the dependencies: `npm install`
 4. Start the development server: `npm start`
 
 ### Usage
 
-Once the server is running, you can interact with the AI Assistant by sending HTTP requests to the `/api/chat` endpoint. The request body should contain a `text` property with the user's input.
 
-For example, you can use the following curl command to send a message to the AI Assistant:
-
-`curl -X POST -H "Content-Type: application/json" -d '{"text": "Hello, world!"}' http://localhost:3000/api/chat`
-
-The AI Assistant will respond with a JSON object containing the generated response text.
 
 ### Contribution Guidelines
 
